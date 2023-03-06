@@ -1,1 +1,4 @@
-import {createListUsersPhotos} from 'data.js';
+import {createListUsersPhotos} from './data.js';
+
+const listUsersPhotos = createListUsersPhotos();
+

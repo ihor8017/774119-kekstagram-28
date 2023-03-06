@@ -29,7 +29,6 @@ const getRandomArrayElements = (elements, numberElements) => {
     newElements.push(elements[idOfElements()]);
   }
   return newElements.join(' ');
-
 };
 
 export {getRandomInteger, createRandomIdFromRangeGenerator, getRandomArrayElements};
