@@ -1,4 +1,3 @@
-import {createListUsersPhotos} from './data.js';
-
-const listUsersPhotos = createListUsersPhotos();
-
+import {userPicturesFragment} from './picture.js';
+const userPhotos = document.querySelector('.pictures');
+userPhotos.appendChild(userPicturesFragment);
