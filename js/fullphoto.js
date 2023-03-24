@@ -1,6 +1,5 @@
 import {userPicturesFragment, listUsersPhotos} from './picture.js';
 
-
 const userPictures = document.querySelector('.pictures');
 userPictures.appendChild(userPicturesFragment);
 const bigPicture = document.querySelector('.big-picture');
