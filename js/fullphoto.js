@@ -5,14 +5,14 @@ userPictures.appendChild(userPicturesFragment);
 const bigPicture = document.querySelector('.big-picture');
 const socialComments = bigPicture.querySelector('.social__comments');
 const userComment = socialComments.querySelector('.social__comment');
+const socialCommentCount = bigPicture.querySelector('.social__comment-count');
+const commentsLoader = bigPicture.querySelector('.comments-loader');
 
 const showBigPictures = (thubnailId) => {
-  const socialCommentCount = bigPicture.querySelector('.social__comment-count');
-  const commentsLoader = bigPicture.querySelector('.comments-loader');
   const userCommentFragment = document.createDocumentFragment();
   socialComments.innerHTML = '';
-  const {comments, url, likes} = thubnailId;
-
+  const {comments, url, likes, description} = thubnailId;
+  bigPicture.querySelector('.social__caption').textContent = description;
   bigPicture.querySelector('.big-picture__img img').src = url;
   bigPicture.querySelector('.likes-count').textContent = likes;
   bigPicture.querySelector('.comments-count').textContent = comments.length;
