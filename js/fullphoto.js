@@ -1,5 +1,5 @@
 import {userPicturesFragment, listUsersPhotos} from './picture.js';
-
+const COMMENTS_PER_PORTION = 5;
 const userPictures = document.querySelector('.pictures');
 userPictures.appendChild(userPicturesFragment);
 const bigPicture = document.querySelector('.big-picture');
@@ -8,37 +8,70 @@ const userComment = socialComments.querySelector('.social__comment');
 const socialCommentCount = bigPicture.querySelector('.social__comment-count');
 const commentsLoader = bigPicture.querySelector('.comments-loader');
 
+let shownComments = 0;
+const createNewComment = (comment) => {
+  const newComment = userComment.cloneNode(true);
+  newComment.querySelector('.social__picture').src = comment.avatar;
+  newComment.querySelector('.social__text').textContent = comment.message;
+  newComment.querySelector('.social__picture').alt = comment.name;
+  return newComment;
+};
+const closeBigPicture = () => {
+  document.removeEventListener('keydown', isEscape);
+  shownComments = 0;
+};
 const showBigPictures = (thubnailId) => {
-  const userCommentFragment = document.createDocumentFragment();
   socialComments.innerHTML = '';
   const {comments, url, likes, description} = thubnailId;
   bigPicture.querySelector('.social__caption').textContent = description;
   bigPicture.querySelector('.big-picture__img img').src = url;
   bigPicture.querySelector('.likes-count').textContent = likes;
-  bigPicture.querySelector('.comments-count').textContent = comments.length;
-  comments.forEach(({avatar, message, name}) => {
-    const newComment = userComment.cloneNode(true);
-    newComment.querySelector('.social__picture').src = avatar;
-    newComment.querySelector('.social__text').textContent = message;
-    newComment.querySelector('.social__picture').alt = name;
-    userCommentFragment.appendChild(newComment);
-  });
-  socialComments.appendChild(userCommentFragment);
+  const renderComments = (comments) => {
+    shownComments += COMMENTS_PER_PORTION;
+    const userCommentFragment = document.createDocumentFragment();
+    if (shownComments >= comments.length) {
+      shownComments = comments.length;
+      commentsLoader.classList.add('hidden');
+    } else {
+      commentsLoader.classList.remove('hidden');
+    }
+    for (let i = 0; i < shownComments; i++) {
+      userCommentFragment.appendChild(createNewComment(comments[i]));
+    }
+    socialComments.innerHTML = '';
+    socialComments.appendChild(userCommentFragment);
+    socialCommentCount.innerHTML = `${shownComments} из <span class="comments-count">125</span> комментариев`;
+    bigPicture.querySelector('.comments-count').textContent = comments.length;
+  };
   bigPicture.classList.remove('hidden');
-  socialCommentCount.classList.add('hidden');
-  commentsLoader.classList.add('hidden');
+  renderComments(comments);
+  commentsLoader.addEventListener('click', () => {
+    renderComments(comments);
+  });
 };
 userPictures.addEventListener('click', (evt) => {
   const thubnail = evt.target.closest('[data-thubnail-id]');
   if (!thubnail) {
     return;
   }
-  const thubnailId = listUsersPhotos.find((element) => element.id === +thubnail.dataset.thubnailId);
+  const thubnailId = listUsersPhotos.find(
+    (element) => element.id === +thubnail.dataset.thubnailId
+  );
   showBigPictures(thubnailId);
   document.body.classList.add('modal-open');
+  document.addEventListener('keydown', isEscape);
 });
+
+function isEscape (evt) {
+  if (evt.key === 'Escape') {
+    bigPicture.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+    closeBigPicture();
+  }
+}
 const closeButton = document.querySelector('.big-picture__cancel');
 closeButton.addEventListener('click', () => {
   bigPicture.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  shownComments = 0;
 });
-
