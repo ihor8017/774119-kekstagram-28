@@ -1,3 +1,4 @@
+import { resetScale } from './scale.js';
 const imageUploadForm = document.querySelector('.img-upload__form');
 const uploadFile = imageUploadForm.querySelector('#upload-file');
 const imageUpload = imageUploadForm.querySelector('.img-upload__overlay');
@@ -26,6 +27,7 @@ const closeUploadFile = () => {
   });
   document.addEventListener('keydown', onEscapeDown);
   imageUploadForm.reset();
+  resetScale();
 };
 
 uploadFile.addEventListener('change', (evt) => {
