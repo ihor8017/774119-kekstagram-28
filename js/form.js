@@ -1,3 +1,5 @@
+import { resetScale } from './scale.js';
+import {resetSlider} from './effects.js';
 const imageUploadForm = document.querySelector('.img-upload__form');
 const uploadFile = imageUploadForm.querySelector('#upload-file');
 const imageUpload = imageUploadForm.querySelector('.img-upload__overlay');
@@ -20,16 +22,16 @@ const closeUploadOnEscape = () => {
 };
 const closeUploadFile = () => {
   cancelUpload.addEventListener('click', () => {
-    //evt.preventDefault();
     imageUpload.classList.add('hidden');
     document.body.classList.remove('modal-open');
   });
   document.addEventListener('keydown', onEscapeDown);
   imageUploadForm.reset();
+  resetScale();
+  resetSlider();
 };
 
-uploadFile.addEventListener('change', (evt) => {
-  evt.preventDefault();
+uploadFile.addEventListener('change', () => {
   document.body.classList.add('modal-open');
   imageUpload.classList.remove('hidden');
   closeUploadFile();
