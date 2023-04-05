@@ -1,5 +1,6 @@
 import { resetScale } from './scale.js';
 import {resetSlider} from './effects.js';
+import { showAlert } from './util.js';
 const imageUploadForm = document.querySelector('.img-upload__form');
 const uploadFile = imageUploadForm.querySelector('#upload-file');
 const imageUpload = imageUploadForm.querySelector('.img-upload__overlay');
@@ -11,11 +12,7 @@ const MAX_NUMBER_HASHTAG = 5;
 const ERRORE_INPUT_HASHTAG = 'Неправильный формат хэштэга';
 const ERRORE_INPUT_DESCRIPTION = 'Количество знаков не больше 140!';
 
-const pristine = new Pristine(imageUploadForm, {
-  classTo: 'img-upload__field-wrapper',
-  errorTextParent: 'img-upload__field-wrapper',
-  errorTextClass: 'img-upload__field-wrapper--errore',
-});
+const pristine = new Pristine(imageUploadForm);
 
 const closeUploadOnEscape = () => {
   document.removeEventListener('keydown', onEscapeDown);
@@ -56,6 +53,7 @@ descriptionField.addEventListener('keydown', (evt) => {
 });
 const validateDescription = (value) => value.length <= 140;
 
+
 const isValidTag = (tag) => HASHTAG_PATTERN.test(tag);
 const hasValidNumber = (tags) => tags.length <= MAX_NUMBER_HASHTAG;
 const hasUniquTag = (tags) => {
@@ -69,9 +67,35 @@ const validateTags = (value) => {
     .filter((element) => element.trim().length);
   return tags.every(isValidTag) && hasValidNumber(tags) && hasUniquTag(tags);
 };
-pristine.addValidator(descriptionField, validateDescription,ERRORE_INPUT_DESCRIPTION);
+
+
+pristine.addValidator(descriptionField, validateDescription, ERRORE_INPUT_DESCRIPTION);
 pristine.addValidator(hashtagField, validateTags, ERRORE_INPUT_HASHTAG);
-imageUploadForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-});
+
+const setUserFormSubmit = (onSuccess) => {
+  imageUploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if (isValid) {
+      const formData = new FormData(evt.target);
+      fetch(
+        'https://28.javascript.pages.academy/kekstagram',
+        {
+          method: 'POST',
+          body: formData,
+        })
+        .then((response) => {
+          if (response.ok) {
+            onSuccess();
+          } else {
+            showAlert('Не удалось отправить форму. Попробуйте ещё раз');
+          }
+        })
+        .catch(() => {
+          showAlert('Не удалось отправить форму. Попробуйте ещё раз');
+        });
+    }
+  });
+};
+setUserFormSubmit();
+export {setUserFormSubmit};

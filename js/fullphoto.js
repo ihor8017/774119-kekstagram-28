@@ -1,14 +1,13 @@
-import {userPicturesFragment, listUsersPhotos} from './picture.js';
+import {listUsersPhotos} from './picture.js';
 const COMMENTS_PER_PORTION = 5;
 const userPictures = document.querySelector('.pictures');
-userPictures.appendChild(userPicturesFragment);
 const bigPicture = document.querySelector('.big-picture');
 const socialComments = bigPicture.querySelector('.social__comments');
 const userComment = socialComments.querySelector('.social__comment');
 const socialCommentCount = bigPicture.querySelector('.social__comment-count');
 const commentsLoader = bigPicture.querySelector('.comments-loader');
-
 let shownComments = 0;
+
 const createNewComment = (comment) => {
   const newComment = userComment.cloneNode(true);
   newComment.querySelector('.social__picture').src = comment.avatar;
@@ -17,8 +16,8 @@ const createNewComment = (comment) => {
   return newComment;
 };
 const closeBigPicture = () => {
-  document.removeEventListener('keydown', isEscape);
   shownComments = 0;
+  document.removeEventListener('keydown', isEscape);
 };
 const showBigPictures = (thubnailId) => {
   socialComments.innerHTML = '';
@@ -26,10 +25,11 @@ const showBigPictures = (thubnailId) => {
   bigPicture.querySelector('.social__caption').textContent = description;
   bigPicture.querySelector('.big-picture__img img').src = url;
   bigPicture.querySelector('.likes-count').textContent = likes;
+
   const renderComments = (comments) => {
     shownComments += COMMENTS_PER_PORTION;
     const userCommentFragment = document.createDocumentFragment();
-    if (shownComments >= comments.length) {
+    if (shownComments > comments.length) {
       shownComments = comments.length;
       commentsLoader.classList.add('hidden');
     } else {
