@@ -1,5 +1,3 @@
-import {createListUsersPhotos} from './data.js';
-
 const newPicture = document.querySelector('#picture')
   .content
   .querySelector('.picture');

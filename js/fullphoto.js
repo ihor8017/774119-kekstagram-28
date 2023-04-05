@@ -28,11 +28,11 @@ const showBigPictures = (thubnailId) => {
 
   const renderComments = (comments) => {
     shownComments += COMMENTS_PER_PORTION;
-    debugger;
     const userCommentFragment = document.createDocumentFragment();
     if (shownComments > comments.length) {
       shownComments = comments.length;
       commentsLoader.classList.add('hidden');
+      commentsLoader.removeEventListener('click',addCommits);
     } else {
       commentsLoader.classList.remove('hidden');
     }
@@ -46,9 +46,10 @@ const showBigPictures = (thubnailId) => {
   };
   bigPicture.classList.remove('hidden');
   renderComments(comments);
-  commentsLoader.addEventListener('click', () => {
+  function addCommits () {
     renderComments(comments);
-  });
+  }
+  commentsLoader.addEventListener('click', addCommits);
 };
 userPictures.addEventListener('click', (evt) => {
   const thubnail = evt.target.closest('[data-thubnail-id]');
@@ -62,7 +63,6 @@ userPictures.addEventListener('click', (evt) => {
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', isEscape);
 });
-
 function isEscape (evt) {
   if (evt.key === 'Escape') {
     bigPicture.classList.add('hidden');
@@ -75,5 +75,4 @@ closeButton.addEventListener('click', () => {
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
   shownComments = 0;
-  console.log(shownComments);
 });

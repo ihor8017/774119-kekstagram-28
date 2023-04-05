@@ -1,6 +1,8 @@
 import { resetScale } from './scale.js';
 import {resetSlider} from './effects.js';
 import { showAlert } from './util.js';
+import { sendData } from './api.js';
+import { showSuccessUpload, showErrorUpload } from './uploadevent.js';
 const imageUploadForm = document.querySelector('.img-upload__form');
 const uploadFile = imageUploadForm.querySelector('#upload-file');
 const imageUpload = imageUploadForm.querySelector('.img-upload__overlay');
@@ -11,26 +13,32 @@ const HASHTAG_PATTERN = /^#[a-zа-яё0-9]{1,19}$/i;
 const MAX_NUMBER_HASHTAG = 5;
 const ERRORE_INPUT_HASHTAG = 'Неправильный формат хэштэга';
 const ERRORE_INPUT_DESCRIPTION = 'Количество знаков не больше 140!';
+const submitButton = imageUploadForm.querySelector('.img-upload__submit');
+
+const SubmitButtonText = {
+  IDLE: 'Сохранить',
+  SENDING: 'Сохраняю...'
+};
 
 const pristine = new Pristine(imageUploadForm, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
-  errorTextTag: 'span',
   errorTextClass: 'img-upload__field-wrapper--errore',
 });
-
+const closeModalForm = () => {
+  imageUpload.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  imageUploadForm.reset();
+  resetScale();
+  resetSlider();
+};
 const closeUploadOnEscape = () => {
   document.removeEventListener('keydown', onEscapeDown);
 };
 const closeUploadFile = () => {
-  cancelUpload.addEventListener('click', () => {
-    imageUpload.classList.add('hidden');
-    document.body.classList.remove('modal-open');
-  });
+  cancelUpload.addEventListener('click', closeModalForm);
   document.addEventListener('keydown', onEscapeDown);
-  imageUploadForm.reset();
-  resetScale();
-  resetSlider();
+
 };
 
 uploadFile.addEventListener('change', () => {
@@ -41,8 +49,7 @@ uploadFile.addEventListener('change', () => {
 
 function onEscapeDown (evt) {
   if (evt.key === 'Escape') {
-    document.body.classList.remove('modal-open');
-    imageUpload.classList.add('hidden');
+    closeModalForm();
     closeUploadOnEscape();
   }
 }
@@ -74,30 +81,31 @@ const validateTags = (value) => {
 };
 pristine.addValidator(hashtagField, validateTags, ERRORE_INPUT_HASHTAG);
 pristine.addValidator(descriptionField, validateDescription, ERRORE_INPUT_DESCRIPTION);
-const setUserFormSubmit = (onSuccess) => {
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = SubmitButtonText.SENDING;
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = SubmitButtonText.IDLE;
+};
+function setUserFormSubmit(onSuccess) {
   imageUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
     if (isValid) {
+      blockSubmitButton();
       const formData = new FormData(evt.target);
-      fetch(
-        'https://28.javascript.pages.academy/kekstagram',
-        {
-          method: 'POST',
-          body: formData,
-        })
-        .then((response) => {
-          if (response.ok) {
-            onSuccess();
-          } else {
-            showAlert('Не удалось отправить форму. Попробуйте ещё раз');
-          }
+      sendData(formData)
+        .then(() => {
+          onSuccess();
+          showSuccessUpload();
         })
         .catch(() => {
-          showAlert('Не удалось отправить форму. Попробуйте ещё раз');
-        });
+          showErrorUpload();
+        }).finally(unblockSubmitButton);
     }
   });
-};
-setUserFormSubmit();
-export {setUserFormSubmit};
+}
+export {setUserFormSubmit, closeModalForm};
