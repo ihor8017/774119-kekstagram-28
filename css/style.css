@@ -1408,3 +1408,11 @@ main {
 .hidden {
   display: none;
 }
+
+.img-upload__field-wrapper--errore {
+  position: relative;
+  top: 5px;
+  padding: 10px;
+  font-size: 18px;
+  background-color: #e90000;
+}

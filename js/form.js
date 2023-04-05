@@ -12,7 +12,12 @@ const MAX_NUMBER_HASHTAG = 5;
 const ERRORE_INPUT_HASHTAG = 'Неправильный формат хэштэга';
 const ERRORE_INPUT_DESCRIPTION = 'Количество знаков не больше 140!';
 
-const pristine = new Pristine(imageUploadForm);
+const pristine = new Pristine(imageUploadForm, {
+  classTo: 'img-upload__field-wrapper',
+  errorTextParent: 'img-upload__field-wrapper',
+  errorTextTag: 'span',
+  errorTextClass: 'img-upload__field-wrapper--errore',
+});
 
 const closeUploadOnEscape = () => {
   document.removeEventListener('keydown', onEscapeDown);
@@ -67,11 +72,8 @@ const validateTags = (value) => {
     .filter((element) => element.trim().length);
   return tags.every(isValidTag) && hasValidNumber(tags) && hasUniquTag(tags);
 };
-
-
-pristine.addValidator(descriptionField, validateDescription, ERRORE_INPUT_DESCRIPTION);
 pristine.addValidator(hashtagField, validateTags, ERRORE_INPUT_HASHTAG);
-
+pristine.addValidator(descriptionField, validateDescription, ERRORE_INPUT_DESCRIPTION);
 const setUserFormSubmit = (onSuccess) => {
   imageUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();

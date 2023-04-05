@@ -28,6 +28,7 @@ const showBigPictures = (thubnailId) => {
 
   const renderComments = (comments) => {
     shownComments += COMMENTS_PER_PORTION;
+    debugger;
     const userCommentFragment = document.createDocumentFragment();
     if (shownComments > comments.length) {
       shownComments = comments.length;
@@ -74,4 +75,5 @@ closeButton.addEventListener('click', () => {
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
   shownComments = 0;
+  console.log(shownComments);
 });
