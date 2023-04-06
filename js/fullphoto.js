@@ -35,6 +35,7 @@ const showBigPictures = (thubnailId) => {
       commentsLoader.removeEventListener('click',addCommits);
     } else {
       commentsLoader.classList.remove('hidden');
+      commentsLoader.addEventListener('click', addCommits);
     }
     for (let i = 0; i < shownComments; i++) {
       userCommentFragment.appendChild(createNewComment(comments[i]));
@@ -49,7 +50,6 @@ const showBigPictures = (thubnailId) => {
   function addCommits () {
     renderComments(comments);
   }
-  commentsLoader.addEventListener('click', addCommits);
 };
 userPictures.addEventListener('click', (evt) => {
   const thubnail = evt.target.closest('[data-thubnail-id]');
