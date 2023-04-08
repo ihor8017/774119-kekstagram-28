@@ -1,3 +1,4 @@
+import {getRandomArray} from './util.js';
 const newPicture = document.querySelector('#picture')
   .content
   .querySelector('.picture');
@@ -13,8 +14,11 @@ const renderGallery = (listPhotos) => {
     userPicturesFragment.appendChild(userPhoto);
   });
   const userPictures = document.querySelector('.pictures');
+  const userPicturesList = document.querySelectorAll('.picture');
+  userPicturesList.forEach((element) => element.remove());
   userPictures.appendChild(userPicturesFragment);
   listUsersPhotos = listPhotos;
 };
+
 
 export {renderGallery, listUsersPhotos};
