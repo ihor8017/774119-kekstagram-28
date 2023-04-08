@@ -29,6 +29,15 @@ const getRandomArrayElements = (elements, numberElements) => {
   }
   return newElements.join(' ');
 };
+const getRandomArray = (elements, numberElements) => {
+  const idOfElements = createRandomIdFromRangeGenerator(0, elements.length - 1);
+  const newElements = [];
+  for (let i = 0; i < numberElements; i++) {
+    newElements.push(elements[idOfElements()]);
+  }
+  return newElements;
+};
+
 const ALERT_SHOW_TIME = 5000;
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
@@ -51,5 +60,13 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
 
-export {getRandomInteger, createRandomIdFromRangeGenerator, getRandomArrayElements, showAlert};
+
+export {getRandomInteger, createRandomIdFromRangeGenerator, getRandomArrayElements, showAlert, getRandomArray, debounce};
