@@ -26,10 +26,10 @@ const showBigPictures = (thubnailId) => {
   bigPicture.querySelector('.big-picture__img img').src = url;
   bigPicture.querySelector('.likes-count').textContent = likes;
 
-  const renderComments = (comments) => {
+  const renderComments = () => {
     shownComments += COMMENTS_PER_PORTION;
     const userCommentFragment = document.createDocumentFragment();
-    if (shownComments > comments.length) {
+    if (shownComments >= comments.length) {
       shownComments = comments.length;
       commentsLoader.classList.add('hidden');
       commentsLoader.removeEventListener('click',addCommits);
@@ -46,9 +46,9 @@ const showBigPictures = (thubnailId) => {
     bigPicture.querySelector('.comments-count').textContent = comments.length;
   };
   bigPicture.classList.remove('hidden');
-  renderComments(comments);
+  renderComments();
   function addCommits () {
-    renderComments(comments);
+    renderComments();
   }
 };
 userPictures.addEventListener('click', (evt) => {

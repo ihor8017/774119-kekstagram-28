@@ -1,6 +1,3 @@
-import { renderGallery } from './picture.js';
-import { debounce } from './util.js';
-const RERENDER_DELAY = 500;
 import {getRandomArray} from './util.js';
 const getDiscussed = (photo) =>{
   const {comments} = photo;
@@ -52,6 +49,5 @@ const getFiteredPhotos = (photos) => {
   }
   return filteredData;
 };
-
 
 export {setFilter, getFiteredPhotos};
