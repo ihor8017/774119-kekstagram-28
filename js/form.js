@@ -1,8 +1,9 @@
 import { resetScale } from './scale.js';
 import {resetSlider} from './effects.js';
-import { showAlert } from './util.js';
 import { sendData } from './api.js';
 import { showSuccessUpload, showErrorUpload } from './uploadevent.js';
+import {uploadUserPhoto} from './uploaduser.js';
+
 const imageUploadForm = document.querySelector('.img-upload__form');
 const uploadFile = imageUploadForm.querySelector('#upload-file');
 const imageUpload = imageUploadForm.querySelector('.img-upload__overlay');
@@ -44,6 +45,7 @@ const closeUploadFile = () => {
 uploadFile.addEventListener('change', () => {
   document.body.classList.add('modal-open');
   imageUpload.classList.remove('hidden');
+  uploadUserPhoto();
   closeUploadFile();
 });
 
