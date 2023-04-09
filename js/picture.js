@@ -1,4 +1,3 @@
-import {getRandomArray} from './util.js';
 const newPicture = document.querySelector('#picture')
   .content
   .querySelector('.picture');

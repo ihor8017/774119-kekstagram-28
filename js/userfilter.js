@@ -1,4 +1,6 @@
 import { renderGallery } from './picture.js';
+import { debounce } from './util.js';
+const RERENDER_DELAY = 500;
 import {getRandomArray} from './util.js';
 const getDiscussed = (photo) =>{
   const {comments} = photo;
@@ -17,7 +19,7 @@ const setFilter = (cb) => {
     cb();
   });
 };
-const renderFiteredGallery = (photos) => {
+const getFiteredPhotos = (photos) => {
   const listFilters = document.querySelectorAll('.img-filters__button');
   let activFilter;
   listFilters.forEach((element) => {
@@ -31,17 +33,25 @@ const renderFiteredGallery = (photos) => {
   }
   attributId.classList.add('img-filters__button--active');
   const id = attributId.id;
+  let filteredData = photos;
   switch (id) {
-    case 'filter-discussed' : renderGallery(photos.slice()
-      .sort(comparePhotos));
+    case 'filter-discussed' : filteredData = photos.slice()
+      .sort(comparePhotos);
+
       attributId.classList.add('img-filters__button--active');
       break;
-    case 'filter-random' : renderGallery(getRandomArray(photos, 10));
+    case 'filter-random' : filteredData = getRandomArray(photos, 10);
+
       attributId.classList.add('img-filters__button--active');
       break;
-    case 'filter-default' : renderGallery(photos);
+    case 'filter-default' : filteredData = photos;
+
       attributId.classList.add('img-filters__button--active');
       break;
+
   }
+  return filteredData;
 };
-export {setFilter, renderFiteredGallery};
+
+
+export {setFilter, getFiteredPhotos};
