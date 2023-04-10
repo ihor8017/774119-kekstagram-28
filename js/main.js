@@ -1,12 +1,12 @@
-import './fullphoto.js';
+import './full-photo.js';
 import {setUserFormSubmit, closeModalForm} from './form.js';
 import './scale.js';
 import './effects.js';
 import { renderGallery } from './picture.js';
-import {setFilter, getFiteredPhotos} from './userfilter.js';
+import {setFilter, getFiteredPhotos} from './user-filter.js';
 import { showAlert, debounce} from './util.js';
 import {getData} from './api.js';
-import './uploaduser.js';
+import './upload-user.js';
 const imgSortFilters = document.querySelector('.img-filters');
 const RERENDER_DELAY = 500;
 const debounceDGalleryRender = debounce(renderGallery,RERENDER_DELAY);

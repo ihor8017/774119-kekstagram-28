@@ -1,9 +1,9 @@
 import { resetScale } from './scale.js';
 import {resetSlider} from './effects.js';
 import { sendData } from './api.js';
-import { showSuccessUpload, showErrorUpload } from './uploadevent.js';
-import {uploadUserPhoto} from './uploaduser.js';
-
+import { showSuccessUpload, showErrorUpload } from './upload-event.js';
+import {uploadUserPhoto} from './upload-user.js';
+import {isEscapeKey} from './util.js';
 const imageUploadForm = document.querySelector('.img-upload__form');
 const uploadFile = imageUploadForm.querySelector('#upload-file');
 const imageUpload = imageUploadForm.querySelector('.img-upload__overlay');
@@ -12,8 +12,9 @@ const hashtagField = imageUploadForm.querySelector('.text__hashtags');
 const descriptionField = imageUploadForm.querySelector('.text__description');
 const HASHTAG_PATTERN = /^#[a-zа-яё0-9]{1,19}$/i;
 const MAX_NUMBER_HASHTAG = 5;
+const MAX_SIMBOLS_TEXTAREA = 140;
 const ERRORE_INPUT_HASHTAG = 'Неправильный формат хэштэга';
-const ERRORE_INPUT_DESCRIPTION = 'Количество знаков не больше 140!';
+const ERRORE_INPUT_DESCRIPTION = `Количество знаков не больше ${MAX_SIMBOLS_TEXTAREA}!`;
 const submitButton = imageUploadForm.querySelector('.img-upload__submit');
 
 const SubmitButtonText = {
@@ -58,16 +59,16 @@ function onEscapeDown (evt) {
   }
 }
 hashtagField.addEventListener('keydown', (evt) => {
-  if (evt.key === 'Escape') {
+  if (isEscapeKey) {
     evt.stopPropagation();
   }
 });
 descriptionField.addEventListener('keydown', (evt) => {
-  if (evt.key === 'Escape') {
+  if (isEscapeKey) {
     evt.stopPropagation();
   }
 });
-const validateDescription = (value) => value.length <= 140;
+const validateDescription = (value) => value.length <= MAX_SIMBOLS_TEXTAREA;
 
 
 const isValidTag = (tag) => HASHTAG_PATTERN.test(tag);

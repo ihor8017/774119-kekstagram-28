@@ -20,15 +20,7 @@ const createRandomIdFromRangeGenerator = (min, max) => {
     return currentValue;
   };
 };
-
-const getRandomArrayElements = (elements, numberElements) => {
-  const idOfElements = createRandomIdFromRangeGenerator(0, elements.length - 1);
-  const newElements = [];
-  for (let i = 0; i < numberElements; i++) {
-    newElements.push(elements[idOfElements()]);
-  }
-  return newElements.join(' ');
-};
+const isEscapeKey = (evt) => evt.key === 'Escape';
 const getRandomArray = (elements, numberElements) => {
   const idOfElements = createRandomIdFromRangeGenerator(0, elements.length - 1);
   const newElements = [];
@@ -69,4 +61,4 @@ const debounce = (callback, timeoutDelay) => {
   };
 };
 
-export {getRandomInteger, createRandomIdFromRangeGenerator, getRandomArrayElements, showAlert, getRandomArray, debounce};
+export {getRandomInteger, createRandomIdFromRangeGenerator, showAlert, getRandomArray, debounce, isEscapeKey};

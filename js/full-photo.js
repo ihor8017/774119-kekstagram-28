@@ -1,4 +1,5 @@
 import {listUsersPhotos} from './picture.js';
+import {isEscapeKey} from './util.js';
 const COMMENTS_PER_PORTION = 5;
 const userPictures = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
@@ -66,8 +67,8 @@ userPictures.addEventListener('click', (evt) => {
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', isEscape);
 });
-function isEscape (evt) {
-  if (evt.key === 'Escape') {
+function isEscape () {
+  if (isEscapeKey) {
     bigPicture.classList.add('hidden');
     document.body.classList.remove('modal-open');
     closeBigPicture();
