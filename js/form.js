@@ -45,6 +45,8 @@ const closeUploadFile = () => {
 uploadFile.addEventListener('change', () => {
   document.body.classList.add('modal-open');
   imageUpload.classList.remove('hidden');
+  resetScale();
+  resetSlider();
   uploadUserPhoto();
   closeUploadFile();
 });

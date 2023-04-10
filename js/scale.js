@@ -11,6 +11,7 @@ let value = 100;
 const resetScale = () => {
   imageUploadPrewier.style.transform = `scale(${DEFAULT_SCALE / 100})`;
   controlValue.value = `${DEFAULT_SCALE}%`;
+  value = 100;
 };
 imageUploadPrewier.style.transform = `scale(${DEFAULT_SCALE / 100})`;
 controlValue.value = `${DEFAULT_SCALE}%`;
